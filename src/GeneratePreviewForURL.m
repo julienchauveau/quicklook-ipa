@@ -33,6 +33,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 													   CFSTR("png"),
 													   NULL );
 			data = [NSData dataWithContentsOfURL:(NSURL *) iconURL];
+            CFRelease(iconURL);
 		}
 		
 		dict = [NSDictionary dictionaryWithObjectsAndKeys:

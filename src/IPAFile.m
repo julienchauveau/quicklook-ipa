@@ -13,11 +13,11 @@
 	
 	// Create a temporary file for Artwork
 	NSString *tmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"%.0f.%@", [NSDate timeIntervalSinceReferenceDate] * 1000.0, @"jpg"]];
-	[[NSFileManager defaultManager] createFileAtPath:tmpPath contents:[NSData alloc] attributes:nil];
+	[[NSFileManager defaultManager] createFileAtPath:tmpPath contents:nil attributes:nil];
 	NSFileHandle *writeHandle = [NSFileHandle fileHandleForWritingAtPath:tmpPath];
 	
 	// Create a task and use 'unzip' to get iTunes Artwork
-	NSTask *task = [[NSTask alloc] init];
+	NSTask *task = [[[NSTask alloc] init] autorelease];
 	[task setLaunchPath: @"/usr/bin/unzip"];
 	[task setArguments: [NSArray arrayWithObjects:@"-p", path, @"iTunesArtwork", nil]];
 	
@@ -31,7 +31,9 @@
 	NSData *data = [NSData dataWithContentsOfFile:tmpPath];
 	
 	// Remove temporary file
-	[[NSFileManager defaultManager] removeFileAtPath:tmpPath handler:nil];
+    NSURL *url = [NSURL fileURLWithPath:tmpPath];
+    NSError *error;
+	[[NSFileManager defaultManager] removeItemAtURL:url error:&error];
 	
 	return data;
 

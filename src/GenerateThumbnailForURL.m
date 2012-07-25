@@ -33,6 +33,7 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
 													   CFSTR("png"),
 													   NULL );
 			data = [NSData dataWithContentsOfURL:(NSURL *) iconURL];
+            CFRelease(iconURL);
 		}
 
 		dict = [NSDictionary dictionaryWithObjectsAndKeys:
