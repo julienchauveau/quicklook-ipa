@@ -15,12 +15,12 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
 {
 	// NSLog(@"GenerateThumbnailForURL %@", url);
 	
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
 	
-    CGSize imageSize;
-    NSDictionary *dict;
+        CGSize imageSize;
+        NSDictionary *dict;
 	
-	NSString *path = [(NSURL *)url path];
+	NSString *path = [(__bridge NSURL *)url path];
 	NSData *data = [IPAFile dataFromPath: path];
 	
 	if(data != nil) {
@@ -32,8 +32,8 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
 													   CFSTR("iTunes-ipa"),
 													   CFSTR("png"),
 													   NULL );
-			data = [NSData dataWithContentsOfURL:(NSURL *) iconURL];
-            CFRelease(iconURL);
+			data = [NSData dataWithContentsOfURL:(__bridge NSURL *) iconURL];
+                CFRelease(iconURL);
 		}
 
 		dict = @{(id)kQLPreviewPropertyWidthKey: @512,
@@ -41,7 +41,7 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
 		imageSize = CGSizeMake(512, 512);
 		
 		CGContextRef cgContext;
-		cgContext = QLThumbnailRequestCreateContext(thumbnail, imageSize, TRUE, (CFDictionaryRef)dict);
+		cgContext = QLThumbnailRequestCreateContext(thumbnail, imageSize, TRUE, (__bridge CFDictionaryRef)dict);
 		if (cgContext) {
 			NSGraphicsContext *context;
 			context = [NSGraphicsContext graphicsContextWithGraphicsPort:
@@ -66,9 +66,9 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
 		}
 	}
 	
-	[pool release];
 	
-    return noErr;
+        return noErr;
+    }
 }
 
 void CancelThumbnailGeneration(void* thisInterface, QLThumbnailRequestRef thumbnail)

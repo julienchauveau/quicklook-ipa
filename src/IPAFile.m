@@ -17,7 +17,7 @@
 	NSFileHandle *writeHandle = [NSFileHandle fileHandleForWritingAtPath:tmpPath];
 	
 	// Create a task and use 'unzip' to get iTunes Artwork
-	NSTask *task = [[[NSTask alloc] init] autorelease];
+	NSTask *task = [[NSTask alloc] init];
 	[task setLaunchPath: @"/usr/bin/unzip"];
 	[task setArguments: @[@"-p", path, @"iTunesArtwork"]];
 	

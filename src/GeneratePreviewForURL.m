@@ -15,12 +15,12 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 {
 	//	NSLog(@"GeneratePreviewForURL %@", url);
 	
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
 	
-    CGSize imageSize;
-    NSDictionary *dict;
+        CGSize imageSize;
+        NSDictionary *dict;
 	
-	NSString *path = [(NSURL *)url path];
+	NSString *path = [(__bridge NSURL *)url path];
 	NSData *data = [IPAFile dataFromPath: path];
 	
 	if(data != nil) {
@@ -32,8 +32,8 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 													   CFSTR("iTunes-ipa"),
 													   CFSTR("png"),
 													   NULL );
-			data = [NSData dataWithContentsOfURL:(NSURL *) iconURL];
-            CFRelease(iconURL);
+			data = [NSData dataWithContentsOfURL:(__bridge NSURL *) iconURL];
+                CFRelease(iconURL);
 		}
 		
 		dict = @{(id)kQLPreviewPropertyWidthKey: @512,
@@ -41,7 +41,7 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 		imageSize = CGSizeMake(512, 512);
 		
 		CGContextRef cgContext;
-		cgContext = QLPreviewRequestCreateContext(preview, imageSize, TRUE, (CFDictionaryRef)dict);
+		cgContext = QLPreviewRequestCreateContext(preview, imageSize, TRUE, (__bridge CFDictionaryRef)dict);
 		if (cgContext) {
 			NSGraphicsContext *context;
 			context = [NSGraphicsContext graphicsContextWithGraphicsPort:
@@ -67,9 +67,9 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
 		}
 	}
 	
-	[pool release];
 	
-    return noErr;
+        return noErr;
+    }
 }
 
 void CancelPreviewGeneration(void* thisInterface, QLPreviewRequestRef preview)
