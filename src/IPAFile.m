@@ -19,7 +19,7 @@
 	// Create a task and use 'unzip' to get iTunes Artwork
 	NSTask *task = [[[NSTask alloc] init] autorelease];
 	[task setLaunchPath: @"/usr/bin/unzip"];
-	[task setArguments: [NSArray arrayWithObjects:@"-p", path, @"iTunesArtwork", nil]];
+	[task setArguments: @[@"-p", path, @"iTunesArtwork"]];
 	
 	// Launch task and wait for execution
 	[task setStandardOutput:writeHandle];

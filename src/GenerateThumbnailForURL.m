@@ -36,10 +36,8 @@ OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thum
             CFRelease(iconURL);
 		}
 
-		dict = [NSDictionary dictionaryWithObjectsAndKeys:
-				[NSNumber numberWithInt:512],kQLPreviewPropertyWidthKey,
-				[NSNumber numberWithInt:512],kQLPreviewPropertyHeightKey,
-				nil];
+		dict = @{(id)kQLPreviewPropertyWidthKey: @512,
+				(id)kQLPreviewPropertyHeightKey: @512};
 		imageSize = CGSizeMake(512, 512);
 		
 		CGContextRef cgContext;
